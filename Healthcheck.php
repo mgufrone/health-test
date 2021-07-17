@@ -13,11 +13,14 @@ class Healthcheck
         return json_decode(file_get_contents($this->root."/composer.json"), true);
     }
     public function deps($info): array {
-        return $info['required'];
+        return $info['require'];
     }
     public function health(): array {
         $info = $this->packageInfo();
-        $version = $info['version'];
+        $version = 'stable';
+        if ($info['version']) {
+            $version = $info['version'];
+        }
         $deps = $this->deps($info);
         return ['status' => 'ok', 'deps'=>$deps, 'version'=>$version];
     }
