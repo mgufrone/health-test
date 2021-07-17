@@ -3,9 +3,14 @@ namespace Mgufrone\HealthcheckBundle;
 
 class Healthcheck
 {
+    private $root;
+    public function __construct($root)
+    {
+        $this->root = $root;
+    }
+
     private function packageInfo() {
-        $cwd = str_replace(getcwd(), "/public", "");
-        return json_decode(file_get_contents($cwd."/composer.json"), true);
+        return json_decode(file_get_contents($this->root."/composer.json"), true);
     }
     public function deps($info): array {
         return $info['required'];
