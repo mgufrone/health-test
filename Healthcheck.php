@@ -18,7 +18,7 @@ class Healthcheck
     public function health(): array {
         $info = $this->packageInfo();
         $version = 'stable';
-        if ($info['version']) {
+        if (isset($info['version'])) {
             $version = $info['version'];
         }
         $deps = $this->deps($info);
