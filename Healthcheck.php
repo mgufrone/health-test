@@ -22,6 +22,6 @@ class Healthcheck
             $version = $info['version'];
         }
         $deps = $this->deps($info);
-        return ['status' => 'ok', 'deps'=>$deps, 'version'=>$version];
+        return ['status' => 'ok', 'deps'=>$deps, 'version'=>$version, 'date' => date(DATE_RFC3339)];
     }
 }
