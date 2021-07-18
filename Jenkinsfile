@@ -49,6 +49,7 @@ spec:
         script {
           def releaseType = "patch"
           def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
+          lastTag = lastTag.replace("\n", "")
           def versions = lastTag.split(".")
           container("python") {
             sh(script: "pip install gitchangelog")
