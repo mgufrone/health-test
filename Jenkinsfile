@@ -52,7 +52,7 @@ spec:
           lastTag = lastTag.replace("\n", "")
           def versions = lastTag.split(".")
           container("python") {
-            sh(script: "pip install gitchangelog")
+            sh "pip install gitchangelog"
             sh "apk add git"
             def notes = sh(script: "gitchangelog \"${lastTag}..\"", returnStdout: true)
             if (notes =~ /(?im)change(s?)\n\~/) {
@@ -62,6 +62,7 @@ spec:
               releaseType = "major"
             }
           }
+          echo "$versions"
           switch (releaseType) {
             case "major":
               versions[0] += 1
