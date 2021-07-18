@@ -1,5 +1,16 @@
 pipeline {
-  agent none
+  agent {
+    kubernetes {
+      inheritFrom "composer sonar"
+      yaml '''
+spec:
+    containers:
+    - name: python
+      image: python:3.9-alpine
+      command: cat
+'''
+    }
+  }
   environment {
     GITHUB = credentials('github')
     SONAR_HOST_URL = credentials('sonar-url')
@@ -7,11 +18,6 @@ pipeline {
   }
   stages {
     stage("Build") {
-      agent {
-        kubernetes {
-          inheritFrom "composer sonar"
-        }
-      }
       steps {
         container("composer") {
           sh "composer install"
@@ -30,16 +36,6 @@ pipeline {
       }
     }
     stage("Build Tag") {
-      agent {
-        kubernetes {
-          yaml '''
-spec:
-    containers:
-    - name: python
-      image: python:3.9-alpine
-'''
-        }
-      }
       when {
         not {
           buildingTag()
