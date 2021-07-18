@@ -50,10 +50,10 @@ spec:
         sh "git config user.name \"jenkins.bot\""
         script {
           def releaseType = "patch"
+          def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
+          def versions = lastTag.split(".")
           container("python") {
             sh(script: "pip install gitchangelog")
-            def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
-            def versions = lastTag.split(".")
             def notes = sh(script: "gitchangelog $lastTag..", returnStdout: true)
             if (notes =~ /(?im)change(s?)\n\~/) {
               releaseType = "minor"
@@ -61,21 +61,21 @@ spec:
             if (notes =~ /(?im)new\n\~/) {
               releaseType = "major"
             }
-            switch (releaseType) {
-              case "major":
-                versions[0] += 1
-                break
-              case "minor":
-                versions[1] += 1
-                break
-              case "patch":
-                versions[2] += 1
-                break
-            }
-            env.currentVersion = versions.join(".")
-            sh "git tag $currentVersion"
-            sh "git push origin $currentVersion"
           }
+          switch (releaseType) {
+            case "major":
+              versions[0] += 1
+              break
+            case "minor":
+              versions[1] += 1
+              break
+            case "patch":
+              versions[2] += 1
+              break
+          }
+          env.currentVersion = versions.join(".")
+          sh "git tag $currentVersion"
+          sh "git push origin $currentVersion"
         }
       }
       post {
