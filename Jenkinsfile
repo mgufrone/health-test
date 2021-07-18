@@ -48,6 +48,7 @@ spec:
       steps {
         sh "git config user.email \"jenkins-bot@mgufron.com\""
         sh "git config user.name \"jenkins.bot\""
+        sh "git fetch --tags"
         script {
           def releaseType = "patch"
           def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
