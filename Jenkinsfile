@@ -17,15 +17,15 @@ pipeline {
           sh "composer install"
           sh "./vendor/bin/phpunit"
         }
-        post {
-          always {
-            container('sonar') {
-              sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
-            }
+      }
+      post {
+        always {
+          container('sonar') {
+            sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
           }
-          success {
-            stash name: env.BUILD_TAG, includes: "**"
-          }
+        }
+        success {
+          stash name: env.BUILD_TAG, includes: "**"
         }
       }
     }
@@ -73,11 +73,15 @@ spec:
                 versions[2] += 1
                 break
             }
-            def currentVersion = versions.join(".")
+            env.currentVersion = versions.join(".")
             sh "git tag $currentVersion"
             sh "git push origin $currentVersion"
-            build job: "php-bumper", parameters: [string(name: "VERSION", value: currentVersion), string(name: "PACKAGE", value: "mgufrone/healthcheck-bundle"), string(name: "BRANCH", value: "main")]
           }
+        }
+      }
+      post {
+        success {
+          build job: "php-bumper", parameters: [string(name: "VERSION", value: env.currentVersion), string(name: "PACKAGE", value: "mgufrone/healthcheck-bundle"), string(name: "BRANCH", value: "main")]
         }
       }
     }
