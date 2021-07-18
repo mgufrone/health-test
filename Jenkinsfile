@@ -7,7 +7,7 @@ spec:
     containers:
     - name: python
       image: python:3.9-alpine
-      command: cat
+      command: "cat"
 '''
     }
   }
