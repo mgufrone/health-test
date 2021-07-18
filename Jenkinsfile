@@ -33,9 +33,6 @@ spec:
             sh('sonar-scanner -Dsonar.login=$SONAR_LOGIN')
           }
         }
-        success {
-          stash name: env.BUILD_TAG, includes: "**"
-        }
       }
     }
     stage("Build Tag") {
@@ -55,7 +52,8 @@ spec:
           def versions = lastTag.split(".")
           container("python") {
             sh(script: "pip install gitchangelog")
-            def notes = sh(script: "gitchangelog $lastTag..", returnStdout: true)
+            sh "apk add git"
+            def notes = sh(script: "gitchangelog ${lastTag}..", returnStdout: true)
             if (notes =~ /(?im)change(s?)\n\~/) {
               releaseType = "minor"
             }
