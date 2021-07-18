@@ -8,7 +8,9 @@ spec:
     - name: python
       image: python:3.9-alpine
       command:
-      - cat
+      - sleep
+      args:
+      - infinity
 '''
     }
   }
