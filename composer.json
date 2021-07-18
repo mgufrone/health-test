@@ -1,6 +1,7 @@
 {
     "name": "mgufrone/healthcheck-bundle",
     "type": "project",
+    "description": "Just some testing",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
