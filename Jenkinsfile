@@ -42,7 +42,7 @@ spec:
       }
       when {
         not {
-          buildTag()
+          buildingTag()
         }
         changelog '.*^bump version$'
       }
