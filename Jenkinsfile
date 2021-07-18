@@ -50,7 +50,7 @@ spec:
           def releaseType = "patch"
           def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
           lastTag = lastTag.replace("\n", "")
-          def versions = lastTag.split(".")
+          def (major, minor, patch) = lastTag.tokenize(".")
           container("python") {
             sh "pip install gitchangelog"
             sh "apk add git"
@@ -62,19 +62,19 @@ spec:
               releaseType = "major"
             }
           }
-          echo "$versions"
+          echo "$major, $minor, $patch"
           switch (releaseType) {
             case "major":
-              versions[0] += 1
+              major += 1
               break
             case "minor":
-              versions[1] += 1
+              minor += 1
               break
             case "patch":
-              versions[2] += 1
+              patch += 1
               break
           }
-          env.currentVersion = versions.join(".")
+          env.currentVersion = [major, minor, patch].join(".")
           sh "git tag $currentVersion"
           sh "git push origin $currentVersion"
         }
