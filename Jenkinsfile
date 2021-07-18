@@ -46,7 +46,7 @@ spec:
         }
         changelog '.*^bump version$'
       }
-      stage('push tag') {
+      steps {
         sh "git config user.email \"jenkins-bot@mgufron.com\""
         sh "git config user.name \"jenkins.bot\""
         script {
