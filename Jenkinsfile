@@ -86,7 +86,7 @@ spec:
       }
       post {
         success {
-          build job: "php-bumper", parameters: [string(name: "VERSION", value: env.currentVersion), string(name: "PACKAGE", value: "mgufrone/healthcheck-bundle"), string(name: "BRANCH", value: "main")]
+          build job: "php-bumper", parameters: [string(name: "VERSION", value: env.currentVersion), string(name: "PACKAGE", value: "mgufrone/healthcheck-bundle"), string(name: "BRANCH", value: "main")], wait: false
         }
       }
     }
