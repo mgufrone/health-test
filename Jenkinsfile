@@ -50,7 +50,7 @@ spec:
           def releaseType = "patch"
           def lastTag = sh(script: "git describe --abbrev=0 --tags", returnStdout: true)
           lastTag = lastTag.replace("\n", "")
-          def (major, minor, patch) = lastTag.tokenize(".")*.toInteger()
+          def (major, minor, patch) = lastTag.tokenize(".") as Integer[]
           container("python") {
             sh "pip install gitchangelog"
             sh "apk add git"
