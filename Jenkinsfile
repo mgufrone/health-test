@@ -53,7 +53,7 @@ spec:
           container("python") {
             sh(script: "pip install gitchangelog")
             sh "apk add git"
-            def notes = sh(script: "gitchangelog ${lastTag}..", returnStdout: true)
+            def notes = sh(script: "gitchangelog \"${lastTag}..\"", returnStdout: true)
             if (notes =~ /(?im)change(s?)\n\~/) {
               releaseType = "minor"
             }
