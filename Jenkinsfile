@@ -78,6 +78,9 @@ spec:
           }
           env.currentVersion = [major, minor, patch].join(".")
           sh "git tag $currentVersion"
+          sh 'echo "exec echo \"$GITHUB_PSW\"" > helper.sh'
+          sh "chmod +x helper.sh"
+          env.GIT_ASKPASS = "./helper.sh"
           sh "git push origin $currentVersion"
         }
       }
